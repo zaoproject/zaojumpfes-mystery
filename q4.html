@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>謎解きクイズ - 問題4</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        .question { font-size: 1.5em; margin-bottom: 20px; }
+        .options button { display: block; width: 80%; margin: 10px auto; padding: 15px; font-size: 1.2em; cursor: pointer; border: 1px solid #ccc; border-radius: 5px; }
+        .result { margin-top: 20px; font-size: 1.2em; }
+        .keyword-box { margin-top: 30px; padding: 20px; background-color: #f0f8ff; border: 2px dashed #4682b4; display: none; }
+        .keyword-box .keyword { font-size: 2em; font-weight: bold; color: #d2691e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>謎解きクイズ - 問題4</h1>
+        <p class="question">太陽が昇る場所は？4</p>
+        <div class="options">
+            <button onclick="checkAnswer('西')">西</button>
+            <button onclick="checkAnswer('東')">東</button>
+            <button onclick="checkAnswer('北')">北</button>
+        </div>
+        <p class="result" id="result"></p>
+        <div class="keyword-box" id="keywordBox">
+            <p>おめでとう！キーワードは…</p>
+            <div class="keyword">と</div>
+            <p>※忘れずにメモしておこう！</p>
+        </div>
+    </div>
+
+<script>
+    function checkAnswer(answer) {
+        const correctAnswer = '東';
+        const resultElement = document.getElementById('result');
+        const keywordBox = document.getElementById('keywordBox');
+        
+        // 回答ボタンを無効化
+        const options = document.querySelectorAll('.options button');
+        options.forEach(button => button.disabled = true);
+
+        if (answer === correctAnswer) {
+            resultElement.textContent = '正解です！';
+            resultElement.style.color = 'green';
+            keywordBox.style.display = 'block';
+            
+            // 正解情報をLocalStorageに保存
+            localStorage.setItem('q4_cleared', 'true');
+
+        } else {
+            resultElement.textContent = '残念、不正解です。しばらくしてからもう一度挑戦してください。';
+            resultElement.style.color = 'red';
+            keywordBox.style.display = 'none';
+
+            // 5秒後にボタンを有効化
+            setTimeout(() => {
+                options.forEach(button => button.disabled = false);
+                resultElement.textContent = ''; // メッセージをクリア
+            }, 5000); // 5000ミリ秒 = 5秒
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>謎解きクイズ - 最終解答</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        .instructions { font-size: 1.2em; margin-bottom: 20px; }
+        #answerInput { padding: 10px; font-size: 1.2em; width: 80%; margin-bottom: 20px; }
+        #submitButton { padding: 10px 20px; font-size: 1.2em; cursor: pointer; }
+        .result { margin-top: 20px; font-size: 1.5em; }
+        .locked-message { color: red; font-size: 1.5em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>謎解きクイズ - 最終解答</h1>
+        <div id="content">
+            </div>
+    </div>
+
+<script>
+    window.onload = function() {
+        const contentDiv = document.getElementById('content');
+        
+        const q1Cleared = localStorage.getItem('q1_cleared');
+        const q2Cleared = localStorage.getItem('q2_cleared');
+        const q3Cleared = localStorage.getItem('q3_cleared');
+        const q4Cleared = localStorage.getItem('q4_cleared');
+        const q5Cleared = localStorage.getItem('q5_cleared');
+
+        if (q1Cleared && q2Cleared && q3Cleared && q4Cleared && q5Cleared) {
+            contentDiv.innerHTML = `
+                <p class="instructions">5つのキーワードを組み合わせて、最終的な答えをひらがなで入力してください。</p>
+                <input type="text" id="answerInput" placeholder="ここに答えを入力">
+                <button id="submitButton" onclick="checkFinalAnswer()">答え合わせ</button>
+                <p class="result" id="finalResult"></p>
+            `;
+        } else {
+            contentDiv.innerHTML = `
+                <p class="locked-message">最終解答ページはまだロックされています。</p>
+                <p>すべての問題をクリアしてから、もう一度挑戦してください。</p>
+            `;
+        }
+    };
+
+    function checkFinalAnswer() {
+        const finalAnswer = document.getElementById('answerInput').value.trim();
+        const correctFinalAnswer = 'ありがとう';
+        const resultElement = document.getElementById('finalResult');
+        const submitButton = document.getElementById('submitButton');
+        const answerInput = document.getElementById('answerInput');
+
+        // 回答ボタンと入力欄を無効化
+        submitButton.disabled = true;
+        answerInput.disabled = true;
+
+        if (finalAnswer === correctFinalAnswer) {
+            resultElement.textContent = '大正解！すべての謎を解き明かしました！';
+            resultElement.style.color = 'green';
+            // 正解の場合はそのまま無効化を継続
+        } else {
+            resultElement.textContent = '残念、答えが違います。しばらくしてからもう一度挑戦してください。';
+            resultElement.style.color = 'red';
+
+            // 5秒後にボタンと入力欄を有効化
+            setTimeout(() => {
+                submitButton.disabled = false;
+                answerInput.disabled = false;
+                resultElement.textContent = ''; // メッセージをクリア
+            }, 5000); // 5000ミリ秒 = 5秒
+        }
+    }
+</script>
+</body>
+</html>
