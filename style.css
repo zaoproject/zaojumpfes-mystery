@@ -1,5 +1,5 @@
 body {
-    background-image: url('bg.png');
+    background-image: url('bg.jpg');
     background-size: cover; /* 画面全体を覆うように画像を拡大・縮小 */
     background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
     background-position: center center; /* 画像を中央に配置 */
@@ -72,5 +72,6 @@ body {
     font-size: 1.5em;
 
 }
+
 
 
