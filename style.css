@@ -1,7 +1,7 @@
 body {
-    background-image: url('bg.jpg');
-    background-size: cover; /* 画面全体を覆うように画像を拡大・縮小 */
-    background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
+    background-image: url('logo.png'),url('bg.jpg');
+    background-size: 500px 300px,cover; /* 画面全体を覆うように画像を拡大・縮小 */
+    background-repeat: no-repeat,no-repeat; /* 画像の繰り返しを防ぐ */
     background-position: center center; /* 画像を中央に配置 */
     background-attachment: fixed; /* 画面をスクロールしても背景を固定 */
 }
@@ -72,6 +72,7 @@ body {
     font-size: 1.5em;
 
 }
+
 
 
 
