@@ -31,7 +31,6 @@
         const resultElement = document.getElementById('result');
         const keywordBox = document.getElementById('keywordBox');
         
-        // 回答ボタンを無効化
         const options = document.querySelectorAll('.options button');
         options.forEach(button => button.disabled = true);
 
@@ -39,20 +38,15 @@
             resultElement.textContent = '正解です！';
             resultElement.style.color = 'green';
             keywordBox.style.display = 'block';
-            
-            // 正解情報をLocalStorageに保存
             localStorage.setItem('q1_cleared', 'true');
-
         } else {
             resultElement.textContent = '残念、不正解です。しばらくしてからもう一度挑戦してください。';
             resultElement.style.color = 'red';
             keywordBox.style.display = 'none';
-
-            // 5秒後にボタンを有効化
             setTimeout(() => {
                 options.forEach(button => button.disabled = false);
-                resultElement.textContent = ''; // メッセージをクリア
-            }, 5000); // 5000ミリ秒 = 5秒
+                resultElement.textContent = '';
+            }, 5000);
         }
     }
 </script>
