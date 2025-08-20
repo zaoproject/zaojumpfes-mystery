@@ -15,6 +15,8 @@
     </style>
 </head>
 <body>
+    <div class="logo"></div>
+
     <div class="container">
         <h1>謎解きクイズ - 問題2</h1>
         <p class="question">太陽が昇る場所は？2</p>
@@ -37,7 +39,6 @@
         const resultElement = document.getElementById('result');
         const keywordBox = document.getElementById('keywordBox');
         
-        // 回答ボタンを無効化
         const options = document.querySelectorAll('.options button');
         options.forEach(button => button.disabled = true);
 
@@ -46,7 +47,6 @@
             resultElement.style.color = 'green';
             keywordBox.style.display = 'block';
             
-            // 正解情報をLocalStorageに保存
             localStorage.setItem('q2_cleared', 'true');
 
         } else {
@@ -54,11 +54,10 @@
             resultElement.style.color = 'red';
             keywordBox.style.display = 'none';
 
-            // 5秒後にボタンを有効化
             setTimeout(() => {
                 options.forEach(button => button.disabled = false);
-                resultElement.textContent = ''; // メッセージをクリア
-            }, 5000); // 5000ミリ秒 = 5秒
+                resultElement.textContent = '';
+            }, 5000);
         }
     }
 </script>
