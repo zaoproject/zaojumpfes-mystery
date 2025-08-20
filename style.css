@@ -1,20 +1,30 @@
+/* サイト全体の背景（ロゴを除く） */
 body {
-    /* 1. 背景画像を複数指定。手前にロゴ、奥に背景 */
-    background-image: url('logo.png'), url('bg.jpg');
-
-    /* 2. ロゴのサイズを修正：画面幅の80%に合わせ、比率を維持 */
-    background-size: 80% auto, cover; 
-
-    /* 3. ロゴは繰り返さない、背景も繰り返さない */
-    background-repeat: no-repeat, no-repeat; 
-
-    /* 4. それぞれの画像の位置を指定。ロゴを上部に、背景を中央に */
-    background-position: center top, center center; 
-
-    /* 5. 背景を固定 */
-    background-attachment: fixed, fixed; 
+    background-image: url('bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
 }
 
+/* ロゴのスタイルを新たに定義 */
+.logo {
+    /* ロゴ画像を背景として設定 */
+    background-image: url('logo.png');
+    
+    /* 画面幅に合わせてサイズを調整 */
+    background-size: 80% auto;
+    
+    /* 画像を中央に配置し、繰り返さない */
+    background-repeat: no-repeat;
+    background-position: center;
+
+    /* ロゴの縦横比を保つために、padding-topで高さを確保 */
+    width: 100%;
+    padding-top: 40%; /* ロゴの縦横比に応じて調整してください (例: 500x300の場合、高さは幅の60%なので60%に) */
+}
+
+/* 既存のcontainerクラスのスタイルは変更不要です */
 .container {
     max-width: 600px;
     margin: auto;
@@ -23,6 +33,7 @@ body {
     border-radius: 10px;
 }
 
+/* 以下のCSSはそのまま使用 */
 .question {
     font-size: 1.5em;
     margin-bottom: 20px;
@@ -79,11 +90,4 @@ body {
 .locked-message {
     color: red;
     font-size: 1.5em;
-
 }
-
-
-
-
-
-
