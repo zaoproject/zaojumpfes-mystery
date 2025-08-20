@@ -2,17 +2,17 @@ body {
     /* 1. 背景画像を複数指定。手前にロゴ、奥に背景 */
     background-image: url('logo.png'), url('bg.jpg');
 
-    /* 2. それぞれの画像にサイズを指定 */
-    background-size: 500px 300px, cover;
+    /* 2. ロゴのサイズを修正：画面幅の80%に合わせ、比率を維持 */
+    background-size: 80% auto, cover; 
 
     /* 3. ロゴは繰り返さない、背景も繰り返さない */
-    background-repeat: no-repeat, no-repeat;
+    background-repeat: no-repeat, no-repeat; 
 
     /* 4. それぞれの画像の位置を指定。ロゴを上部に、背景を中央に */
-    background-position: center top, center center;
+    background-position: center top, center center; 
 
     /* 5. 背景を固定 */
-    background-attachment: fixed, fixed;
+    background-attachment: fixed, fixed; 
 }
 
 .container {
@@ -81,6 +81,7 @@ body {
     font-size: 1.5em;
 
 }
+
 
 
 
