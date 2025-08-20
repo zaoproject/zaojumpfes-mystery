@@ -56,7 +56,10 @@
         if (finalAnswer === correctFinalAnswer) {
             resultElement.textContent = '大正解！すべての謎を解き明かしました！';
             resultElement.style.color = 'green';
-            // 正解の場合はそのまま無効化を継続
+            // 正解の場合は、Googleフォームに移動
+            setTimeout(() => {
+                window.location.href = 'https://forms.gle/ZpUf6HssPudhEzsy8';
+            }, 3000); // 3秒後に移動
         } else {
             resultElement.textContent = '残念、答えが違います。しばらくしてからもう一度挑戦してください。';
             resultElement.style.color = 'red';
@@ -65,11 +68,10 @@
             setTimeout(() => {
                 submitButton.disabled = false;
                 answerInput.disabled = false;
-                resultElement.textContent = ''; // メッセージをクリア
-            }, 5000); // 5000ミリ秒 = 5秒
+                resultElement.textContent = '';
+            }, 5000);
         }
     }
 </script>
 </body>
 </html>
-
