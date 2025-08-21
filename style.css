@@ -13,7 +13,7 @@ body {
     background-image: url('logo.png');
     
     /* 画面幅に合わせてサイズを調整 */
-    background-size: 80% auto;
+    background-size: 100% auto;
     
     /* 画像を中央に配置し、繰り返さない */
     background-repeat: no-repeat;
@@ -91,3 +91,4 @@ body {
     color: red;
     font-size: 1.5em;
 }
+
