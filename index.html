@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>謎解きクイズ</title>
+    <style>
+        /* style.cssの内容をここに統合 */
+        body {
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+        .logo {
+            background-image: url('logo.png');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            padding-top: 60%; /* ロゴの縦横比に応じて調整 (例: 500x300の場合、高さは幅の60%) */
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.9); /* 背景画像を考慮して少し透明度を持たせる */
+        }
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .options button {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            padding: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .keyword-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border: 2px dashed #4682b4;
+            display: none;
+        }
+        .keyword-box .keyword {
+            font-size: 2em;
+            font-weight: bold;
+            color: #d2691e;
+        }
+        .instructions {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        #answerInput {
+            padding: 10px;
+            font-size: 1.2em;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        #submitButton {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .locked-message {
+            color: red;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo"></div>
+    <div class="container" id="main-container">
+        </div>
+
+<script>
+    // 1. クイズデータをオブジェクトとして一元管理
+    const quizzes = {
+        '1': { question: '太陽が昇る場所は？', correctAnswer: '東', keyword: 'あ' },
+        '2': { question: '太陽が昇る場所は？2', correctAnswer: '東', keyword: 'り' },
+        '3': { question: '太陽が昇る場所は？3', correctAnswer: '東', keyword: 'が' },
+        '4': { question: '太陽が昇る場所は？4', correctAnswer: '東', keyword: 'と' },
+        '5': { question: '太陽が昇る場所は？5', correctAnswer: '東', keyword: 'う' }
+    };
+
+    // 2. ページ読み込み時にURLを解析して表示を切り替える
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageId = urlParams.get('q'); // URLの?q= の値を取得
+        const mainContainer = document.getElementById('main-container');
+
+        if (pageId && quizzes[pageId]) {
+            // q=1～5の場合、クイズを表示
+            displayQuiz(mainContainer, pageId);
+        } else if (pageId === 'final') {
+            // q=finalの場合、最終解答ページを表示
+            displayFinalPage(mainContainer);
+        } else {
+            // qが指定されていない、または無効な場合は案内ページを表示
+            displayHomePage(mainContainer);
+        }
+    };
+
+    // 3. クイズ表示用のHTMLを生成する関数
+    function displayQuiz(container, quizId) {
+        const quizData = quizzes[quizId];
+        container.innerHTML = `
+            <h1>謎解きクイズ - 問題${quizId}</h1>
+            <p class="question">${quizData.question}</p>
+            <div class="options">
+                <button onclick="checkAnswer('西', '${quizId}')">西</button>
+                <button onclick="checkAnswer('東', '${quizId}')">東</button>
+                <button onclick="checkAnswer('北', '${quizId}')">北</button>
+            </div>
+            <p class="result" id="result"></p>
+            <div class="keyword-box" id="keywordBox">
+                <p>おめでとう！キーワードは…</p>
+                <div class="keyword">${quizData.keyword}</div>
+                <p>※忘れずにメモしておこう！</p>
+            </div>
+        `;
+    }
+
+    // 4. 最終解答ページ用のHTMLを生成する関数
+    function displayFinalPage(container) {
+        // 全ての問題がクリアされているかLocalStorageでチェック
+        const allCleared = Object.keys(quizzes).every(id => localStorage.getItem(`q${id}_cleared`) === 'true');
+
+        if (allCleared) {
+            container.innerHTML = `
+                <h1>謎解きクイズ - 最終解答</h1>
+                <p class="instructions">5つのキーワードを組み合わせて、最終的な答えをひらがなで入力してください。</p>
+                <input type="text" id="answerInput" placeholder="ここに答えを入力">
+                <button id="submitButton" onclick="checkFinalAnswer()">答え合わせ</button>
+                <p class="result" id="finalResult"></p>
+                <p class="error-message" id="errorMessage"></p>
+            `;
+        } else {
+            container.innerHTML = `
+                <h1>謎解きクイズ - 最終解答</h1>
+                <p class="locked-message">最終解答ページはまだロックされています。</p>
+                <p>すべての問題をクリアしてから、もう一度挑戦してください。</p>
+            `;
+        }
+    }
+
+    // 5. 案内ページ用のHTMLを生成する関数
+    function displayHomePage(container) {
+        container.innerHTML = `
+            <h1>謎解きクイズへようこそ！</h1>
+            <p>指定されたQRコードを読み取って、クイズに挑戦してください。</p>
+        `;
+    }
+
+    // 6. クイズの回答をチェックする関数
+    function checkAnswer(answer, quizId) {
+        const correctAnswer = quizzes[quizId].correctAnswer;
+        const resultElement = document.getElementById('result');
+        const keywordBox = document.getElementById('keywordBox');
+        const options = document.querySelectorAll('.options button');
+
+        options.forEach(button => button.disabled = true);
+
+        if (answer === correctAnswer) {
+            resultElement.textContent = '正解です！';
+            resultElement.style.color = 'green';
+            keywordBox.style.display = 'block';
+            localStorage.setItem(`q${quizId}_cleared`, 'true');
+        } else {
+            resultElement.textContent = '残念、不正解です。しばらくしてからもう一度挑戦してください。';
+            resultElement.style.color = 'red';
+            setTimeout(() => {
+                options.forEach(button => button.disabled = false);
+                resultElement.textContent = '';
+            }, 5000);
+        }
+    }
+
+    // 7. 最終回答をチェックする関数 (元のfinal.htmlのスクリプトと同じ)
+    function checkFinalAnswer() {
+        const finalAnswer = document.getElementById('answerInput').value.trim();
+        const correctFinalAnswer = 'ありがとう';
+        const resultElement = document.getElementById('finalResult');
+        const errorMessageElement = document.getElementById('errorMessage');
+        const submitButton = document.getElementById('submitButton');
+        const answerInput = document.getElementById('answerInput');
+
+        resultElement.textContent = '';
+        errorMessageElement.textContent = '';
+        submitButton.disabled = true;
+        answerInput.disabled = true;
+
+        if (finalAnswer === correctFinalAnswer) {
+            resultElement.textContent = '大正解！3秒後にGoogleフォームへ移動します。';
+            resultElement.style.color = 'green';
+            setTimeout(() => {
+                window.location.href = 'https://forms.gle/ZpUf6HssPudhEzsy8';
+            }, 3000);
+        } else {
+            resultElement.textContent = '残念、答えが違います。しばらくしてからもう一度挑戦してください。';
+            resultElement.style.color = 'red';
+            setTimeout(() => {
+                submitButton.disabled = false;
+                answerInput.disabled = false;
+                resultElement.textContent = '';
+            }, 5000);
+        }
+    }
+</script>
+</body>
+</html>
