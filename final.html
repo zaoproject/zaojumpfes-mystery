@@ -23,7 +23,7 @@
         '1': { question: '太陽が昇る場所は？', correctAnswer: '東', keyword: 'あ' },
         '2': { question: '太陽が昇る場所は？2', correctAnswer: '東', keyword: 'り' },
         '3': { question: '太陽が昇る場所は？3', correctAnswer: '東', keyword: 'が' },
-        '4': { question: '太陽が昇る場所は？4', correctAnswer: '東', keyword: 'と' },
+        '4': { question: '太陽が昇る場所は？4', correctAnswer: '東', keyword: 'と' }, // ★★★ここのキーを '4.' から '4' に修正しました★★★
         '5': { question: '太陽が昇る場所は？5', correctAnswer: '東', keyword: 'う' }
     };
 
@@ -42,7 +42,7 @@
         }
     };
 
-    // 3. クイズ表示用のHTMLを生成する関数 (変更なし)
+    // 3. クイズ表示用のHTMLを生成する関数
     function displayQuiz(container, quizId) {
         const quizData = quizzes[quizId];
         container.innerHTML = `
@@ -62,7 +62,7 @@
         `;
     }
 
-    // 4. 最終解答ページ用のHTMLを生成する関数 (★変更点)
+    // 4. 最終解答ページ用のHTMLを生成する関数
     function displayFinalPage(container) {
         const allCleared = Object.keys(quizzes).every(id => localStorage.getItem(`q${id}_cleared`) === 'true');
 
@@ -83,16 +83,14 @@
             `;
         }
         
-        // ★★★ここから追加★★★
         // 解答状況に関わらず、リセットボタンを常に追加表示する
         container.innerHTML += `
             <hr style="margin: 40px 0;">
             <button onclick="clearProgress()">解答記録をリセットする</button>
         `;
-        // ★★★ここまで追加★★★
     }
 
-    // 5. 案内ページ用のHTMLを生成する関数 (変更なし)
+    // 5. 案内ページ用のHTMLを生成する関数
     function displayHomePage(container) {
         container.innerHTML = `
             <h1>謎解きクイズへようこそ！</h1>
@@ -100,7 +98,7 @@
         `;
     }
 
-    // 6. クイズの回答をチェックする関数 (変更なし)
+    // 6. クイズの回答をチェックする関数
     function checkAnswer(answer, quizId) {
         const correctAnswer = quizzes[quizId].correctAnswer;
         const resultElement = document.getElementById('result');
@@ -124,7 +122,7 @@
         }
     }
 
-    // 7. 最終回答をチェックする関数 (変更なし)
+    // 7. 最終回答をチェックする関数
     function checkFinalAnswer() {
         const finalAnswer = document.getElementById('answerInput').value.trim();
         const correctFinalAnswer = 'ありがとう';
@@ -155,8 +153,7 @@
         }
     }
 
-    // 8. ★★★ここから新しい関数を追加★★★
-    // 解答記録をクリアする関数
+    // 8. 解答記録をクリアする関数
     function clearProgress() {
         if (confirm('本当にすべての解答記録をリセットしますか？')) {
             Object.keys(quizzes).forEach(id => {
@@ -169,5 +166,6 @@
 </script>
 </body>
 </html>
+
 
 
