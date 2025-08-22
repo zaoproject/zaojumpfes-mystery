@@ -4,84 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>謎解きクイズ</title>
-    <style>
-        /* style.cssの内容をここに統合 */
-        body {
-            background-image: url('bg.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: fixed;
-        }
-        .logo {
-            background-image: url('logo.png');
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-            background-position: center;
-            width: 100%;
-            padding-top: 60%; /* ロゴの縦横比に応じて調整 (例: 500x300の場合、高さは幅の60%) */
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.9); /* 背景画像を考慮して少し透明度を持たせる */
-        }
-        .question {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-        }
-        .options button {
-            display: block;
-            width: 80%;
-            margin: 10px auto;
-            padding: 15px;
-            font-size: 1.2em;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-        .keyword-box {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f0f8ff;
-            border: 2px dashed #4682b4;
-            display: none;
-        }
-        .keyword-box .keyword {
-            font-size: 2em;
-            font-weight: bold;
-            color: #d2691e;
-        }
-        .instructions {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-        #answerInput {
-            padding: 10px;
-            font-size: 1.2em;
-            width: 80%;
-            margin-bottom: 20px;
-        }
-        #submitButton {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-        .locked-message {
-            color: red;
-            font-size: 1.5em;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="logo"></div>
+
     <div class="container" id="main-container">
         </div>
 
@@ -95,20 +22,22 @@
         '5': { question: '太陽が昇る場所は？5', correctAnswer: '東', keyword: 'う' }
     };
 
-    // 2. ページ読み込み時にURLを解析して表示を切り替える
+    // 2. ページ読み込み時の処理
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const pageId = urlParams.get('q'); // URLの?q= の値を取得
+        const pageId = urlParams.get('q');
         const mainContainer = document.getElementById('main-container');
 
+        if (!mainContainer) {
+            console.error('Error: main-container not found!');
+            return;
+        }
+
         if (pageId && quizzes[pageId]) {
-            // q=1～5の場合、クイズを表示
             displayQuiz(mainContainer, pageId);
         } else if (pageId === 'final') {
-            // q=finalの場合、最終解答ページを表示
             displayFinalPage(mainContainer);
         } else {
-            // qが指定されていない、または無効な場合は案内ページを表示
             displayHomePage(mainContainer);
         }
     };
@@ -135,11 +64,12 @@
 
     // 4. 最終解答ページ用のHTMLを生成する関数
     function displayFinalPage(container) {
-        // 全ての問題がクリアされているかLocalStorageでチェック
         const allCleared = Object.keys(quizzes).every(id => localStorage.getItem(`q${id}_cleared`) === 'true');
 
+        let contentHtml = '';
         if (allCleared) {
-            container.innerHTML = `
+            // 全問クリアしていたら、入力フォームを表示
+            contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
                 <p class="instructions">5つのキーワードを組み合わせて、最終的な答えをひらがなで入力してください。</p>
                 <input type="text" id="answerInput" placeholder="ここに答えを入力">
@@ -148,12 +78,21 @@
                 <p class="error-message" id="errorMessage"></p>
             `;
         } else {
-            container.innerHTML = `
+            // まだクリアしていない問題があれば、ロックメッセージを表示
+            contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
                 <p class="locked-message">最終解答ページはまだロックされています。</p>
                 <p>すべての問題をクリアしてから、もう一度挑戦してください。</p>
             `;
         }
+
+        // 最後にリセットボタンを追加
+        contentHtml += `
+            <hr style="margin: 40px 0;">
+            <button onclick="clearProgress()">解答記録をリセットする</button>
+        `;
+
+        container.innerHTML = contentHtml;
     }
 
     // 5. 案内ページ用のHTMLを生成する関数
@@ -188,17 +127,14 @@
         }
     }
 
-    // 7. 最終回答をチェックする関数 (元のfinal.htmlのスクリプトと同じ)
+    // 7. 最終回答をチェックする関数
     function checkFinalAnswer() {
         const finalAnswer = document.getElementById('answerInput').value.trim();
         const correctFinalAnswer = 'ありがとう';
         const resultElement = document.getElementById('finalResult');
-        const errorMessageElement = document.getElementById('errorMessage');
         const submitButton = document.getElementById('submitButton');
         const answerInput = document.getElementById('answerInput');
 
-        resultElement.textContent = '';
-        errorMessageElement.textContent = '';
         submitButton.disabled = true;
         answerInput.disabled = true;
 
@@ -218,6 +154,18 @@
             }, 5000);
         }
     }
+
+    // 8. 解答記録をクリアする関数
+    function clearProgress() {
+        if (confirm('本当にすべての解答記録をリセットしますか？')) {
+            Object.keys(quizzes).forEach(id => {
+                localStorage.removeItem(`q${id}_cleared`);
+            });
+            alert('解答記録をリセットしました。');
+            location.reload(); // ページを再読み込みして変更を反映
+        }
+    }
 </script>
+
 </body>
 </html>
