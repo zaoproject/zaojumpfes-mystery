@@ -68,17 +68,14 @@
 
         let contentHtml = '';
         if (allCleared) {
-            // 全問クリアしていたら、入力フォームを表示
             contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
                 <p class="instructions">5つのキーワードを組み合わせて、最終的な答えをひらがなで入力してください。</p>
                 <input type="text" id="answerInput" placeholder="ここに答えを入力">
                 <button id="submitButton" onclick="checkFinalAnswer()">答え合わせ</button>
-                <p class="result" id="finalResult"></p>
-                <p class="error-message" id="errorMessage"></p>
+                <div class="result" id="finalResult"></div>
             `;
         } else {
-            // まだクリアしていない問題があれば、ロックメッセージを表示
             contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
                 <p class="locked-message">最終解答ページはまだロックされています。</p>
@@ -86,7 +83,6 @@
             `;
         }
 
-        // 最後にリセットボタンを追加
         contentHtml += `
             <hr style="margin: 40px 0;">
             <button onclick="clearProgress()">解答記録をリセットする</button>
@@ -127,7 +123,8 @@
         }
     }
 
-    // 7. 最終回答をチェックする関数
+    // 7. ★★★★★ ここが変更点です ★★★★★
+    // 最終回答をチェックする関数
     function checkFinalAnswer() {
         const finalAnswer = document.getElementById('answerInput').value.trim();
         const correctFinalAnswer = 'ありがとう';
@@ -135,16 +132,19 @@
         const submitButton = document.getElementById('submitButton');
         const answerInput = document.getElementById('answerInput');
 
+        // 入力欄と「答え合わせ」ボタンを無効化
         submitButton.disabled = true;
         answerInput.disabled = true;
 
         if (finalAnswer === correctFinalAnswer) {
-            resultElement.textContent = '大正解！3秒後にGoogleフォームへ移動します。';
-            resultElement.style.color = 'green';
-            setTimeout(() => {
-                window.location.href = 'https://forms.gle/ZpUf6HssPudhEzsy8';
-            }, 3000);
+            // 自動リダイレクトの代わりに、メッセージとボタンを表示
+            resultElement.innerHTML = `
+                <p style="color: green; font-weight: bold;">大正解！</p>
+                <p>お疲れ様でした！下のボタンを押してアンケートに進んでください。</p>
+                <button onclick="goToForm()">アンケートに進む</button>
+            `;
         } else {
+            // 不正解だった場合の処理
             resultElement.textContent = '残念、答えが違います。しばらくしてからもう一度挑戦してください。';
             resultElement.style.color = 'red';
             setTimeout(() => {
@@ -164,6 +164,12 @@
             alert('解答記録をリセットしました。');
             location.reload(); // ページを再読み込みして変更を反映
         }
+    }
+    
+    // 9. ★★★★★ 新しく追加した関数です ★★★★★
+    // アンケートページに移動する関数
+    function goToForm() {
+        window.location.href = 'https://forms.gle/ZpUf6HssPudhEzsy8';
     }
 </script>
 
