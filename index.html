@@ -123,8 +123,7 @@
         }
     }
 
-    // 7. ★★★★★ ここが変更点です ★★★★★
-    // 最終回答をチェックする関数
+    // 7. 最終回答をチェックする関数
     function checkFinalAnswer() {
         const finalAnswer = document.getElementById('answerInput').value.trim();
         const correctFinalAnswer = 'ありがとう';
@@ -132,19 +131,16 @@
         const submitButton = document.getElementById('submitButton');
         const answerInput = document.getElementById('answerInput');
 
-        // 入力欄と「答え合わせ」ボタンを無効化
         submitButton.disabled = true;
         answerInput.disabled = true;
 
         if (finalAnswer === correctFinalAnswer) {
-            // 自動リダイレクトの代わりに、メッセージとボタンを表示
             resultElement.innerHTML = `
                 <p style="color: green; font-weight: bold;">大正解！</p>
                 <p>お疲れ様でした！下のボタンを押してアンケートに進んでください。</p>
                 <button onclick="goToForm()">アンケートに進む</button>
             `;
         } else {
-            // 不正解だった場合の処理
             resultElement.textContent = '残念、答えが違います。しばらくしてからもう一度挑戦してください。';
             resultElement.style.color = 'red';
             setTimeout(() => {
@@ -162,14 +158,14 @@
                 localStorage.removeItem(`q${id}_cleared`);
             });
             alert('解答記録をリセットしました。');
-            location.reload(); // ページを再読み込みして変更を反映
+            location.reload();
         }
     }
     
-    // 9. ★★★★★ 新しく追加した関数です ★★★★★
-    // アンケートページに移動する関数
+    // 9. ★★★★★ ここが変更点です ★★★★★
+    // アンケートページを「新しいタブ」で開く関数
     function goToForm() {
-        window.location.href = 'https://forms.gle/ZpUf6HssPudhEzsy8';
+        window.open('https://forms.gle/ZpUf6HssPudhEzsy8', '_blank');
     }
 </script>
 
