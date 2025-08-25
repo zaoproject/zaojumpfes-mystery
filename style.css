@@ -1,7 +1,5 @@
 /* 全体の基本設定 */
 body {
-    /* ★★★ 変更点 ★★★ */
-    /* 背景画像への暗いフィルターを削除し、画像本来の明るさに戻しました */
     background: url('bg.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -29,13 +27,9 @@ body {
     margin: auto;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.25); /* 影を少し強調して立体感を出す */
-
-    /* ★★★ 変更点 ★★★ */
-    /* 背景の白い箱の透明度を少し上げ、より不透明に近づけました */
-    /* これにより、背景が明るくても中の文字がはっきりと読めます */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     background-color: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.8); /* 枠線も少しだけ透明に */
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 /* 質問文のスタイル */
@@ -43,9 +37,13 @@ body {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 20px;
-    /* ★★★ 変更点 ★★★ */
-    /* 重要なテキストにだけ、控えめな影を追加して読みやすくします */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* 影を白っぽくして文字を読みやすく */
+
+    /* ★★★★★ ここが変更点です ★★★★★ */
+    /* 背景を半透明の白に設定 */
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px; /* 内側の余白を追加 */
+    border-radius: 8px; /* 角を丸くする */
 }
 
 /* 選択肢ボタンのスタイル */
@@ -56,16 +54,27 @@ body {
     padding: 15px;
     font-size: 1.2em;
     cursor: pointer;
-    border: 1px solid #aaa;
+    border: 1px solid rgba(0, 0, 0, 0.2); /* 枠線も少し透明に */
     border-radius: 8px;
-    background-color: #f0f0f0;
     color: #333;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s; /* アニメーションを追加 */
+
+    /* ★★★★★ ここが変更点です ★★★★★ */
+    /* 背景を半透明の白っぽい色に設定 */
+    background-color: rgba(255, 255, 255, 0.85);
+    font-weight: bold;
 }
 
+/* ボタンにマウスカーソルを乗せたとき */
 .options button:hover {
-    background-color: #dcdcdc;
+    background-color: rgba(255, 255, 255, 1); /* カーソルを乗せたら不透明な白に */
 }
+
+/* ボタンを押したとき */
+.options button:active {
+    transform: scale(0.98); /* 少しだけ小さくなるアニメーション */
+}
+
 
 /* 結果表示エリアのスタイル */
 .result {
@@ -78,7 +87,7 @@ body {
 .keyword-box {
     margin-top: 30px;
     padding: 20px;
-    background-color: rgba(240, 248, 255, 0.95); /* 少し透明度を持たせる */
+    background-color: rgba(240, 248, 255, 0.95);
     border: 2px dashed #4682b4;
     border-radius: 8px;
 }
@@ -96,7 +105,10 @@ body {
     font-size: 1.2em;
     margin-bottom: 20px;
     line-height: 1.6;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-radius: 8px;
 }
 
 #answerInput, #submitButton {
@@ -121,5 +133,5 @@ body {
     color: #d9534f;
     font-size: 1.5em;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
