@@ -1,77 +1,101 @@
-/* サイト全体の背景（ロゴを除く） */
+/* 全体の基本設定 */
 body {
-    background-image: url('bg.jpg');
+    /* 背景画像の上にうっすらと黒いフィルターをかける */
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('bg.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
+    font-family: sans-serif; /* デフォルトのフォントを指定 */
+
+    /* ★★★★★ 変更点 ★★★★★ */
+    /* すべてのテキストに、読みやすさ向上のための影を追加 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    color: #333; /* デフォルトの文字色を少し濃いめに設定 */
 }
 
-/* ロゴのスタイルを新たに定義 */
+/* ロゴ画像 */
 .logo {
-    /* ロゴ画像を背景として設定 */
     background-image: url('logo.png');
-    
-    /* 画面幅に合わせてサイズを調整 */
     background-size: 100% auto;
-    
-    /* 画像を中央に配置し、繰り返さない */
     background-repeat: no-repeat;
     background-position: center;
-
-    /* ロゴの縦横比を保つために、padding-topで高さを確保 */
     width: 100%;
-    padding-top: 60%; /* ロゴの縦横比に応じて調整してください (例: 500x300の場合、高さは幅の60%なので60%に) */
+    max-width: 400px; /* ロゴが大きくなりすぎないように最大幅を指定 */
+    margin: 20px auto; /* 上下の余白を追加 */
+    padding-top: 60%;
 }
 
-/* 既存のcontainerクラスのスタイルは変更不要です */
+/* クイズや最終解答が表示されるメインの箱 */
 .container {
     max-width: 600px;
     margin: auto;
-    padding: 20px;
+    padding: 25px;
     border: 1px solid #ccc;
     border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 箱にも影をつけて立体感を出す */
+
+    /* ★★★★★ 変更点 ★★★★★ */
+    /* 背景を少し透過した白に設定 (rgbaの最後の値が透明度) */
+    background-color: rgba(255, 255, 255, 0.92);
 }
 
-/* 以下のCSSはそのまま使用 */
+/* 質問文のスタイル */
 .question {
     font-size: 1.5em;
+    font-weight: bold; /* 文字を少し太くする */
     margin-bottom: 20px;
 }
 
+/* 選択肢ボタンのスタイル */
 .options button {
     display: block;
-    width: 80%;
+    width: 90%;
     margin: 10px auto;
     padding: 15px;
     font-size: 1.2em;
     cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-shadow: none; /* ボタンの文字には影をつけない */
+    transition: background-color 0.2s; /* ホバー時の色の変化を滑らかに */
 }
 
+/* ボタンにマウスカーソルを乗せたときのスタイル */
+.options button:hover {
+    background-color: #dcdcdc;
+}
+
+/* 結果表示エリアのスタイル */
 .result {
     margin-top: 20px;
     font-size: 1.2em;
+    font-weight: bold;
 }
 
+/* キーワード表示ボックスのスタイル */
 .keyword-box {
     margin-top: 30px;
     padding: 20px;
     background-color: #f0f8ff;
     border: 2px dashed #4682b4;
-    display: none;
+    border-radius: 8px;
 }
 
 .keyword-box .keyword {
-    font-size: 2em;
+    font-size: 2.2em;
     font-weight: bold;
     color: #d2691e;
+    text-align: center; /* キーワードを中央揃えに */
 }
 
+/* 最終解答ページの入力欄や説明文 */
 .instructions {
     font-size: 1.2em;
     margin-bottom: 20px;
+    line-height: 1.6; /* 行間を少し広げて読みやすく */
 }
 
 #answerInput {
@@ -79,6 +103,8 @@ body {
     font-size: 1.2em;
     width: 80%;
     margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 #submitButton {
@@ -87,9 +113,9 @@ body {
     cursor: pointer;
 }
 
+/* ロックされているときのメッセージ */
 .locked-message {
-    color: red;
+    color: #d9534f; /* 少し落ち着いた赤色に */
     font-size: 1.5em;
+    font-weight: bold;
 }
-
-
