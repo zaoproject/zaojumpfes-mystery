@@ -13,16 +13,47 @@
         </div>
 
 <script>
-    // 1. クイズデータをオブジェクトとして一元管理
+    // 1. ★★★★★ ここが変更点です ★★★★★
+    // 各クイズにヒント(hint)を追加
     const quizzes = {
-        '1': { question: '太陽が昇る場所は？', correctAnswer: '東', keyword: 'あ' },
-        '2': { question: '太陽が昇る場所は？2', correctAnswer: '東', keyword: 'り' },
-        '3': { question: '太陽が昇る場所は？3', correctAnswer: '東', keyword: 'が' },
-        '4': { question: '太陽が昇る場所は？4', correctAnswer: '東', keyword: 'と' },
-        '5': { question: '太陽が昇る場所は？5', correctAnswer: '東', keyword: 'う' }
+        '1': {
+            question: '蔵王ジャンプ台が建設されたのはいつでしょうか？',
+            options: ['1976年', '1978年', '1980年', '1982年'],
+            correctAnswer: '1978年',
+            keyword: 'ツ',
+            hint: '受付で配ったパンフレットを見よう！'
+        },
+        '2': {
+            question: 'ジャンプ台かの下から上までの標高差と近い高さの建物は次のうちどれでしょうか？',
+            options: ['山形市役所', '山形県庁', '上山スカイタワー', '霞城セントラル'],
+            correctAnswer: '霞城セントラル',
+            keyword: 'ャ',
+            hint: 'インフォメーションコーナー横の看板を見てみよう！'
+        },
+        '3': {
+            question: '蔵王ジャンプ台で髙梨沙羅選手が出した最大の飛距離は次のうちどれでしょう？',
+            options: ['101.0m', '103.5m', '106.0m', '108.5m'],
+            correctAnswer: '106.0m',
+            keyword: 'ェ',
+            hint: 'ジャンプ台に設置されている看板を見てみよう！'
+        },
+        '4': {
+            question: '選手が着地する場所（ランディングバーン）の最大斜度は何度でしょうか？',
+            options: ['35度', '36.5度', '38度', '39.5度'],
+            correctAnswer: '36.5度',
+            keyword: 'シ',
+            hint: '受付で配ったパンフレットを見よう！'
+        },
+        '5': {
+            question: '8月にここで開催されたサマージャンプ大会で第2位となった内藤智文選手の勤務先はどちらでしょうか？',
+            options: ['蔵王温泉宿泊施設', '蔵王温泉スキー場', '山形県職員', '山形市職員'],
+            correctAnswer: '山形市職員',
+            keyword: 'ン',
+            hint: '受付テントに掲示してある新聞のコピーを見てみよう！'
+        }
     };
 
-    // 2. ページ読み込み時の処理
+    // 2. ページ読み込み時の処理 (変更なし)
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         const pageId = urlParams.get('q');
@@ -42,16 +73,19 @@
         }
     };
 
-    // 3. クイズ表示用のHTMLを生成する関数
+    // 3. クイズ表示用のHTMLを動的に生成する関数 (変更なし)
     function displayQuiz(container, quizId) {
         const quizData = quizzes[quizId];
+        let optionsHtml = '';
+        quizData.options.forEach(option => {
+            optionsHtml += `<button onclick="checkAnswer('${option}', '${quizId}')">${option}</button>`;
+        });
+
         container.innerHTML = `
             <h1>謎解きクイズ - 問題${quizId}</h1>
             <p class="question">${quizData.question}</p>
             <div class="options">
-                <button onclick="checkAnswer('西', '${quizId}')">西</button>
-                <button onclick="checkAnswer('東', '${quizId}')">東</button>
-                <button onclick="checkAnswer('北', '${quizId}')">北</button>
+                ${optionsHtml}
             </div>
             <p class="result" id="result"></p>
             <div class="keyword-box" id="keywordBox">
@@ -62,15 +96,14 @@
         `;
     }
 
-    // 4. 最終解答ページ用のHTMLを生成する関数
+    // 4. 最終解答ページ用のHTMLを生成する関数 (変更なし)
     function displayFinalPage(container) {
         const allCleared = Object.keys(quizzes).every(id => localStorage.getItem(`q${id}_cleared`) === 'true');
-
         let contentHtml = '';
         if (allCleared) {
             contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
-                <p class="instructions">5つのキーワードを組み合わせて、最終的な答えをひらがなで入力してください。</p>
+                <p class="instructions">5つのキーワードをはめ込んで答えを導きだそう！「蔵王ジャンプ台の別名はアリオンテック〇〇〇〇〇」<br>最終的な答えを全角カタカナで入力してください。</p>
                 <input type="text" id="answerInput" placeholder="ここに答えを入力">
                 <button id="submitButton" onclick="checkFinalAnswer()">答え合わせ</button>
                 <div class="result" id="finalResult"></div>
@@ -82,16 +115,14 @@
                 <p>すべての問題をクリアしてから、もう一度挑戦してください。</p>
             `;
         }
-
         contentHtml += `
             <hr style="margin: 40px 0;">
             <button onclick="clearProgress()">解答記録をリセットする</button>
         `;
-
         container.innerHTML = contentHtml;
     }
 
-    // 5. 案内ページ用のHTMLを生成する関数
+    // 5. 案内ページ用のHTMLを生成する関数 (変更なし)
     function displayHomePage(container) {
         container.innerHTML = `
             <h1>謎解きクイズへようこそ！</h1>
@@ -99,7 +130,8 @@
         `;
     }
 
-    // 6. クイズの回答をチェックする関数
+    // 6. ★★★★★ ここが変更点です ★★★★★
+    // クイズの回答をチェックする関数
     function checkAnswer(answer, quizId) {
         const correctAnswer = quizzes[quizId].correctAnswer;
         const resultElement = document.getElementById('result');
@@ -114,26 +146,28 @@
             keywordBox.style.display = 'block';
             localStorage.setItem(`q${quizId}_cleared`, 'true');
         } else {
-            resultElement.textContent = '残念、不正解です。しばらくしてからもう一度挑戦してください。';
-            resultElement.style.color = 'red';
+            // 不正解だった場合の処理
+            resultElement.innerHTML = `
+                <p style="color: red;">残念、不正解です。</p>
+                <button onclick="showHint('${quizId}')">ヒントを見る</button>
+                <p>5秒後にもう一度挑戦できます。</p>
+            `;
             setTimeout(() => {
                 options.forEach(button => button.disabled = false);
-                resultElement.textContent = '';
+                resultElement.innerHTML = ''; // メッセージを消去
             }, 5000);
         }
     }
 
-    // 7. 最終回答をチェックする関数
+    // 7. 最終回答をチェックする関数 (変更なし)
     function checkFinalAnswer() {
         const finalAnswer = document.getElementById('answerInput').value.trim();
-        const correctFinalAnswer = 'ありがとう';
+        const correctFinalAnswer = 'シャンツェ';
         const resultElement = document.getElementById('finalResult');
         const submitButton = document.getElementById('submitButton');
         const answerInput = document.getElementById('answerInput');
-
         submitButton.disabled = true;
         answerInput.disabled = true;
-
         if (finalAnswer === correctFinalAnswer) {
             resultElement.innerHTML = `
                 <p style="color: green; font-weight: bold;">大正解！</p>
@@ -151,7 +185,7 @@
         }
     }
 
-    // 8. 解答記録をクリアする関数
+    // 8. 解答記録をクリアする関数 (変更なし)
     function clearProgress() {
         if (confirm('本当にすべての解答記録をリセットしますか？')) {
             Object.keys(quizzes).forEach(id => {
@@ -161,11 +195,17 @@
             location.reload();
         }
     }
-    
-    // 9. ★★★★★ ここが変更点です ★★★★★
-    // アンケートページを「新しいタブ」で開く関数
+
+    // 9. アンケートページを「新しいタブ」で開く関数 (変更なし)
     function goToForm() {
         window.open('https://forms.gle/ZpUf6HssPudhEzsy8', '_blank');
+    }
+
+    // 10. ★★★★★ 新しく追加した関数です ★★★★★
+    // ヒントを表示する関数
+    function showHint(quizId) {
+        const hint = quizzes[quizId].hint;
+        alert('【ヒント】\n' + hint);
     }
 </script>
 
