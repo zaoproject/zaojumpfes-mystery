@@ -1,17 +1,14 @@
 /* 全体の基本設定 */
 body {
-    /* 背景画像の上にうっすらと黒いフィルターをかける */
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('bg.jpg');
+    /* ★★★ 変更点 ★★★ */
+    /* 背景画像への暗いフィルターを削除し、画像本来の明るさに戻しました */
+    background: url('bg.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
-    font-family: sans-serif; /* デフォルトのフォントを指定 */
-
-    /* ★★★★★ 変更点 ★★★★★ */
-    /* すべてのテキストに、読みやすさ向上のための影を追加 */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    color: #333; /* デフォルトの文字色を少し濃いめに設定 */
+    font-family: sans-serif;
+    color: #333;
 }
 
 /* ロゴ画像 */
@@ -21,8 +18,8 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     width: 100%;
-    max-width: 400px; /* ロゴが大きくなりすぎないように最大幅を指定 */
-    margin: 20px auto; /* 上下の余白を追加 */
+    max-width: 400px;
+    margin: 20px auto;
     padding-top: 60%;
 }
 
@@ -31,20 +28,24 @@ body {
     max-width: 600px;
     margin: auto;
     padding: 25px;
-    border: 1px solid #ccc;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 箱にも影をつけて立体感を出す */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25); /* 影を少し強調して立体感を出す */
 
-    /* ★★★★★ 変更点 ★★★★★ */
-    /* 背景を少し透過した白に設定 (rgbaの最後の値が透明度) */
-    background-color: rgba(255, 255, 255, 0.92);
+    /* ★★★ 変更点 ★★★ */
+    /* 背景の白い箱の透明度を少し上げ、より不透明に近づけました */
+    /* これにより、背景が明るくても中の文字がはっきりと読めます */
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.8); /* 枠線も少しだけ透明に */
 }
 
 /* 質問文のスタイル */
 .question {
     font-size: 1.5em;
-    font-weight: bold; /* 文字を少し太くする */
+    font-weight: bold;
     margin-bottom: 20px;
+    /* ★★★ 変更点 ★★★ */
+    /* 重要なテキストにだけ、控えめな影を追加して読みやすくします */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* 選択肢ボタンのスタイル */
@@ -59,11 +60,9 @@ body {
     border-radius: 8px;
     background-color: #f0f0f0;
     color: #333;
-    text-shadow: none; /* ボタンの文字には影をつけない */
-    transition: background-color 0.2s; /* ホバー時の色の変化を滑らかに */
+    transition: background-color 0.2s;
 }
 
-/* ボタンにマウスカーソルを乗せたときのスタイル */
 .options button:hover {
     background-color: #dcdcdc;
 }
@@ -79,7 +78,7 @@ body {
 .keyword-box {
     margin-top: 30px;
     padding: 20px;
-    background-color: #f0f8ff;
+    background-color: rgba(240, 248, 255, 0.95); /* 少し透明度を持たせる */
     border: 2px dashed #4682b4;
     border-radius: 8px;
 }
@@ -88,34 +87,39 @@ body {
     font-size: 2.2em;
     font-weight: bold;
     color: #d2691e;
-    text-align: center; /* キーワードを中央揃えに */
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* 最終解答ページの入力欄や説明文 */
 .instructions {
     font-size: 1.2em;
     margin-bottom: 20px;
-    line-height: 1.6; /* 行間を少し広げて読みやすく */
+    line-height: 1.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-#answerInput {
+#answerInput, #submitButton {
     padding: 10px;
     font-size: 1.2em;
-    width: 80%;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
     border-radius: 5px;
 }
 
+#answerInput {
+    width: 80%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
 #submitButton {
-    padding: 10px 20px;
-    font-size: 1.2em;
     cursor: pointer;
+    padding: 10px 20px;
 }
 
 /* ロックされているときのメッセージ */
 .locked-message {
-    color: #d9534f; /* 少し落ち着いた赤色に */
+    color: #d9534f;
     font-size: 1.5em;
     font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
