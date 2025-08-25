@@ -52,6 +52,9 @@
         }
     };
 
+    // グローバル変数として、現在回答をチェック中かどうかの状態を管理
+    let isChecking = false;
+
     // 2. ページ読み込み時の処理 (変更なし)
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -129,9 +132,13 @@
         `;
     }
 
-    // 6. ★★★★★ ここが変更点です ★★★★★
-    // クイズの回答をチェックする関数
+    // 6. クイズの回答をチェックする関数 (バグ修正済み)
     function checkAnswer(answer, quizId) {
+        if (isChecking) {
+            return;
+        }
+        isChecking = true;
+
         const correctAnswer = quizzes[quizId].correctAnswer;
         const resultElement = document.getElementById('result');
         const keywordBox = document.getElementById('keywordBox');
@@ -143,10 +150,8 @@
             resultElement.textContent = '正解です！';
             resultElement.style.color = 'green';
             keywordBox.style.display = 'block';
-            // ★★★ バグを修正！ 'id' ではなく 'quizId' を使用 ★★★
             localStorage.setItem(`q${quizId}_cleared`, 'true');
         } else {
-            // 不正解だった場合の処理
             resultElement.innerHTML = `
                 <p style="color: red;">残念、不正解です。</p>
                 <button onclick="showHint('${quizId}')">ヒントを見る</button>
@@ -159,6 +164,7 @@
                     p.textContent = 'もう一度挑戦してください。';
                     p.style.color = 'black';
                 }
+                isChecking = false;
             }, 5000);
         }
     }
@@ -189,7 +195,7 @@
         }
     }
 
-    // 8. 解答記録をクリアする関数 (変更なし)
+    // 8. 解答記録をクリアする関数 (動作確認済み)
     function clearProgress() {
         if (confirm('本当にすべての解答記録をリセットしますか？')) {
             Object.keys(quizzes).forEach(id => {
