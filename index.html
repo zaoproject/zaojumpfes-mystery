@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>謎解きクイズ</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="logo"></div>
-
-    <div class="container" id="main-container">
-        </div>
-
-<script>
-    // 1. クイズデータ
+// 1. クイズデータ (変更なし)
     const quizzes = {
         '1': {
             question: '蔵王ジャンプ台が建設されたのはいつでしょうか？',
@@ -55,7 +40,7 @@
     // ボタンの連打を防ぐための「旗」
     let isChecking = false;
 
-    // 2. ページが読み込まれたときの処理
+    // 2. ページが読み込まれたときの処理 (変更なし)
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         const pageId = urlParams.get('q');
@@ -75,7 +60,7 @@
         }
     };
 
-    // 3. クイズ画面を作る
+    // 3. クイズ画面を作る (変更なし)
     function displayQuiz(container, quizId) {
         const quizData = quizzes[quizId];
         let optionsHtml = '';
@@ -98,25 +83,47 @@
         `;
     }
 
-    // 4. 最終解答ページを作る
+    // 4. ★★★★★ ここが変更点です ★★★★★
+    // 最終解答ページを作る関数
     function displayFinalPage(container) {
         const allCleared = Object.keys(quizzes).every(id => localStorage.getItem(`q${id}_cleared`) === 'true');
+
+        // キーワード表示用のHTMLを生成する
+        let keywordsHtml = '<p>集めたキーワード</p><div class="keyword-display">';
+        Object.keys(quizzes).forEach(id => {
+            const isCleared = localStorage.getItem(`q${id}_cleared`) === 'true';
+            if (isCleared) {
+                // 正解済みの場合はキーワードを表示
+                keywordsHtml += `<div class="keyword-slot cleared">${quizzes[id].keyword}</div>`;
+            } else {
+                // 未正解の場合は「？」を表示
+                keywordsHtml += `<div class="keyword-slot">？</div>`;
+            }
+        });
+        keywordsHtml += '</div>';
+
+
         let contentHtml = '';
         if (allCleared) {
+            // 全問正解した場合
             contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
+                ${keywordsHtml}
                 <p class="instructions">5つのキーワードをはめ込んで答えを導きだそう！「蔵王ジャンプ台の別名はアリオンテック〇〇〇〇〇」<br>最終的な答えを全角カタカナで入力してください。</p>
                 <input type="text" id="answerInput" placeholder="ここに答えを入力">
                 <button id="submitButton" onclick="checkFinalAnswer()">答え合わせ</button>
                 <div class="result" id="finalResult"></div>
             `;
         } else {
+            // まだ解いていない問題がある場合
             contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
+                ${keywordsHtml}
                 <p class="locked-message">最終解答ページはまだロックされています。</p>
                 <p>すべての問題をクリアしてから、もう一度挑戦してください。</p>
             `;
         }
+
         contentHtml += `
             <hr style="margin: 40px 0;">
             <button onclick="clearProgress()">解答記録をリセットする</button>
@@ -124,7 +131,7 @@
         container.innerHTML = contentHtml;
     }
 
-    // 5. 最初の案内ページを作る
+    // 5. 最初の案内ページを作る (変更なし)
     function displayHomePage(container) {
         container.innerHTML = `
             <h1>謎解きクイズへようこそ！</h1>
@@ -132,7 +139,7 @@
         `;
     }
 
-    // 6. 答え合わせの処理
+    // 6. 答え合わせの処理 (変更なし)
     function checkAnswer(answer, quizId) {
         if (isChecking) {
             return;
@@ -153,7 +160,7 @@
             localStorage.setItem(`q${quizId}_cleared`, 'true');
         } else {
             resultElement.innerHTML = `
-                <p style="color: red;">残念、不正解です。5秒後に再解答できます。</p>
+                <p style="color: red;">残念、不正解です。</p>
                 <button onclick="showHint('${quizId}')">ヒントを見る</button>
             `;
             setTimeout(() => {
@@ -168,7 +175,7 @@
         }
     }
 
-    // 7. 最終解答の答え合わせ
+    // 7. 最終解答の答え合わせ (変更なし)
     function checkFinalAnswer() {
         const finalAnswer = document.getElementById('answerInput').value.trim();
         const correctFinalAnswer = 'シャンツェ';
@@ -194,7 +201,7 @@
         }
     }
 
-    // 8. 解答記録をリセットする
+    // 8. 解答記録をリセットする (変更なし)
     function clearProgress() {
         if (confirm('本当にすべての解答記録をリセットしますか？')) {
             Object.keys(quizzes).forEach(id => {
@@ -205,18 +212,16 @@
         }
     }
 
-    // 9. アンケートに移動する
+    // 9. アンケートに移動する (変更なし)
     function goToForm() {
         window.open('https://forms.gle/ZpUf6HssPudhEzsy8', '_blank');
     }
 
-    // 10. ヒントを表示する
+    // 10. ヒントを表示する (変更なし)
     function showHint(quizId) {
         const hint = quizzes[quizId].hint;
         alert('【ヒント】\n' + hint);
     }
 </script>
-
 </body>
 </html>
-
