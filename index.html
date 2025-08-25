@@ -153,7 +153,7 @@
             localStorage.setItem(`q${quizId}_cleared`, 'true');
         } else {
             resultElement.innerHTML = `
-                <p style="color: red;">残念、不正解です。</p>
+                <p style="color: red;">残念、不正解です。5秒後に再解答できます。</p>
                 <button onclick="showHint('${quizId}')">ヒントを見る</button>
             `;
             setTimeout(() => {
@@ -219,3 +219,4 @@
 
 </body>
 </html>
+
