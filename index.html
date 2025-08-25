@@ -13,8 +13,7 @@
         </div>
 
 <script>
-    // 1. ★★★★★ ここが変更点です ★★★★★
-    // 各クイズにヒント(hint)を追加
+    // 1. クイズデータ (変更なし)
     const quizzes = {
         '1': {
             question: '蔵王ジャンプ台が建設されたのはいつでしょうか？',
@@ -144,17 +143,22 @@
             resultElement.textContent = '正解です！';
             resultElement.style.color = 'green';
             keywordBox.style.display = 'block';
-            localStorage.setItem(`q${quizId}_cleared`, 'true');
+            localStorage.setItem(`q${id}_cleared`, 'true');
         } else {
             // 不正解だった場合の処理
             resultElement.innerHTML = `
                 <p style="color: red;">残念、不正解です。</p>
                 <button onclick="showHint('${quizId}')">ヒントを見る</button>
-                <p>5秒後にもう一度挑戦できます。</p>
-            `;
+            `; // ★ 5秒後のメッセージを削除
+
             setTimeout(() => {
                 options.forEach(button => button.disabled = false);
-                resultElement.innerHTML = ''; // メッセージを消去
+                // ★ メッセージ全体を消すのではなく、「不正解です」の文字だけを消すように変更
+                const p = resultElement.querySelector('p');
+                if (p) {
+                    p.textContent = 'もう一度挑戦してください。';
+                    p.style.color = 'black';
+                }
             }, 5000);
         }
     }
@@ -201,8 +205,7 @@
         window.open('https://forms.gle/ZpUf6HssPudhEzsy8', '_blank');
     }
 
-    // 10. ★★★★★ 新しく追加した関数です ★★★★★
-    // ヒントを表示する関数
+    // 10. ヒントを表示する関数 (変更なし)
     function showHint(quizId) {
         const hint = quizzes[quizId].hint;
         alert('【ヒント】\n' + hint);
