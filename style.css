@@ -28,8 +28,8 @@ body {
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-    background-color: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 /* 質問文のスタイル */
@@ -41,7 +41,7 @@ body {
 
     /* ★★★★★ ここが変更点です ★★★★★ */
     /* 背景を半透明の白に設定 */
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
     padding: 15px; /* 内側の余白を追加 */
     border-radius: 8px; /* 角を丸くする */
 }
@@ -61,7 +61,7 @@ body {
 
     /* ★★★★★ ここが変更点です ★★★★★ */
     /* 背景を半透明の白っぽい色に設定 */
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.5);
     font-weight: bold;
 }
 
@@ -87,7 +87,7 @@ body {
 .keyword-box {
     margin-top: 30px;
     padding: 20px;
-    background-color: rgba(240, 248, 255, 0.95);
+    background-color: rgba(240, 248, 255, 0.5);
     border: 2px dashed #4682b4;
     border-radius: 8px;
 }
@@ -106,7 +106,7 @@ body {
     margin-bottom: 20px;
     line-height: 1.6;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
     padding: 15px;
     border-radius: 8px;
 }
@@ -135,3 +135,4 @@ body {
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
+
