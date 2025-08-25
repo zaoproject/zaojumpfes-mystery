@@ -4,7 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>謎解きクイズ</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 全体の基本設定 */
+        body {
+            background: url('bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            font-family: sans-serif;
+            color: #333;
+        }
+
+        /* ロゴ画像 */
+        .logo {
+            background-image: url('logo.png');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            padding-top: 60%;
+        }
+
+        /* クイズや最終解答が表示されるメインの箱 */
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* 質問文のスタイル */
+        .question {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* 選択肢ボタンのスタイル */
+        .options button {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            padding: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            color: #333;
+            transition: background-color 0.2s, transform 0.1s;
+            background-color: rgba(255, 255, 255, 0.85);
+            font-weight: bold;
+        }
+        .options button:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .options button:active {
+            transform: scale(0.98);
+        }
+
+        /* 結果表示エリアのスタイル */
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        /* ★★★★★ ここが修正点です ★★★★★ */
+        /* キーワード表示ボックスのスタイル */
+        .keyword-box {
+            display: none; /* ★ 最初は非表示にしておく ★ */
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(240, 248, 255, 0.95);
+            border: 2px dashed #4682b4;
+            border-radius: 8px;
+        }
+
+        .keyword-box .keyword {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #d2691e;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 最終解答ページの入力欄や説明文 */
+        .instructions {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        #answerInput, #submitButton {
+            padding: 10px;
+            font-size: 1.2em;
+            border-radius: 5px;
+        }
+        #answerInput {
+            width: 80%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+        }
+        #submitButton {
+            cursor: pointer;
+            padding: 10px 20px;
+        }
+
+        /* ロックされているときのメッセージ */
+        .locked-message {
+            color: #d9534f;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+    </style>
 </head>
 <body>
     <div class="logo"></div>
@@ -132,7 +259,7 @@
         `;
     }
 
-    // 6. クイズの回答をチェックする関数 (バグ修正済み)
+    // 6. クイズの回答をチェックする関数 (変更なし)
     function checkAnswer(answer, quizId) {
         if (isChecking) {
             return;
@@ -195,28 +322,5 @@
         }
     }
 
-    // 8. 解答記録をクリアする関数 (動作確認済み)
-    function clearProgress() {
-        if (confirm('本当にすべての解答記録をリセットしますか？')) {
-            Object.keys(quizzes).forEach(id => {
-                localStorage.removeItem(`q${id}_cleared`);
-            });
-            alert('解答記録をリセットしました。');
-            location.reload();
-        }
-    }
-
-    // 9. アンケートページを「新しいタブ」で開く関数 (変更なし)
-    function goToForm() {
-        window.open('https://forms.gle/ZpUf6HssPudhEzsy8', '_blank');
-    }
-
-    // 10. ヒントを表示する関数 (変更なし)
-    function showHint(quizId) {
-        const hint = quizzes[quizId].hint;
-        alert('【ヒント】\n' + hint);
-    }
-</script>
-
-</body>
-</html>
+    // 8. 解答記録をクリアする関数 (変更なし)
+    function clear
