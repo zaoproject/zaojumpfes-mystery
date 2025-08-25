@@ -65,6 +65,20 @@ body {
     transform: scale(0.98);
 }
 
+/* ★★★★★ ここから追加 ★★★★★ */
+/* ボタンが無効化されているときの専用スタイル */
+.options button:disabled {
+    background-color: rgba(204, 204, 204, 0.7); /* 半透明のグレー */
+    color: #888; /* 薄い文字色 */
+    cursor: not-allowed; /* 禁止マークのカーソル */
+    transform: none; /* アニメーションを無効化 */
+}
+/* 無効化されたボタンは、マウスを乗せても光らないようにする */
+.options button:disabled:hover {
+    background-color: rgba(204, 204, 204, 0.7);
+}
+/* ★★★★★ ここまで追加 ★★★★★ */
+
 /* 結果表示エリアのスタイル */
 .result {
     margin-top: 20px;
@@ -74,7 +88,7 @@ body {
 
 /* キーワード表示ボックスのスタイル */
 .keyword-box {
-    display: none; /* 最初は非表示にしておく */
+    display: none;
     margin-top: 30px;
     padding: 20px;
     background-color: rgba(240, 248, 255, 0.95);
