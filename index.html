@@ -74,52 +74,68 @@
         }
     };
 
-    // 3. クイズ画面を作る (変更なし)
+    // 3. ★★★★★ ここが変更点です ★★★★★
+    // クイズ画面を作る関数
     function displayQuiz(container, quizId) {
         const quizData = quizzes[quizId];
-        let optionsHtml = '';
-        quizData.options.forEach(option => {
-            optionsHtml += `<button onclick="checkAnswer('${option}', '${quizId}')">${option}</button>`;
-        });
+        const isCleared = localStorage.getItem(`q${quizId}_cleared`) === 'true';
 
-        container.innerHTML = `
-            <h1>謎解きクイズ - 問題${quizId}</h1>
-            <p class="question">${quizData.question}</p>
-            <div class="options">
-                ${optionsHtml}
-            </div>
-            <p class="result" id="result"></p>
-            <div class="keyword-box" id="keywordBox">
-                <p>おめでとう！キーワードは…</p>
-                <div class="keyword">${quizData.keyword}</div>
-                <p>※忘れずにメモしておこう！</p>
-            </div>
-        `;
+        let contentHtml = '';
+
+        if (isCleared) {
+            // ★ もし既に正解済みだったら、こちらのHTMLを表示 ★
+            contentHtml = `
+                <h1>謎解きクイズ - 問題${quizId}</h1>
+                <p class="question">${quizData.question}</p>
+                <p class="result" style="color: green;">この問題は正解済みです！</p>
+                <div class="keyword-box" style="display: block;">
+                    <p>獲得したキーワードは…</p>
+                    <div class="keyword">${quizData.keyword}</div>
+                </div>
+            `;
+        } else {
+            // ★ まだ正解していなければ、通常のクイズ画面を表示 ★
+            let optionsHtml = '';
+            quizData.options.forEach(option => {
+                optionsHtml += `<button onclick="checkAnswer('${option}', '${quizId}')">${option}</button>`;
+            });
+
+            contentHtml = `
+                <h1>謎解きクイズ - 問題${quizId}</h1>
+                <p class="question">${quizData.question}</p>
+                <div class="options">
+                    ${optionsHtml}
+                </div>
+                <p class="result" id="result"></p>
+                <div class="keyword-box" id="keywordBox">
+                    <p>おめでとう！キーワードは…</p>
+                    <div class="keyword">${quizData.keyword}</div>
+                    <p>※忘れずにメモしておこう！</p>
+                </div>
+            `;
+        }
+
+        container.innerHTML = contentHtml;
     }
 
-    // 4. ★★★★★ ここが変更点です ★★★★★
-    // 最終解答ページを作る関数
+
+    // 4. 最終解答ページを作る関数 (変更なし)
     function displayFinalPage(container) {
         const allCleared = Object.keys(quizzes).every(id => localStorage.getItem(`q${id}_cleared`) === 'true');
 
-        // キーワード表示用のHTMLを生成する
         let keywordsHtml = '<p>集めたキーワード</p><div class="keyword-display">';
         Object.keys(quizzes).forEach(id => {
             const isCleared = localStorage.getItem(`q${id}_cleared`) === 'true';
             if (isCleared) {
-                // 正解済みの場合はキーワードを表示
                 keywordsHtml += `<div class="keyword-slot cleared">${quizzes[id].keyword}</div>`;
             } else {
-                // 未正解の場合は「？」を表示
                 keywordsHtml += `<div class="keyword-slot">？</div>`;
             }
         });
         keywordsHtml += '</div>';
 
-
         let contentHtml = '';
         if (allCleared) {
-            // 全問正解した場合
             contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
                 ${keywordsHtml}
@@ -129,7 +145,6 @@
                 <div class="result" id="finalResult"></div>
             `;
         } else {
-            // まだ解いていない問題がある場合
             contentHtml = `
                 <h1>謎解きクイズ - 最終解答</h1>
                 ${keywordsHtml}
@@ -236,6 +251,6 @@
         const hint = quizzes[quizId].hint;
         alert('【ヒント】\n' + hint);
     }
-</script>
+    </script>
 </body>
 </html>
