@@ -143,17 +143,17 @@
             resultElement.textContent = '正解です！';
             resultElement.style.color = 'green';
             keywordBox.style.display = 'block';
-            localStorage.setItem(`q${id}_cleared`, 'true');
+            // ★★★ バグを修正！ 'id' ではなく 'quizId' を使用 ★★★
+            localStorage.setItem(`q${quizId}_cleared`, 'true');
         } else {
             // 不正解だった場合の処理
             resultElement.innerHTML = `
                 <p style="color: red;">残念、不正解です。</p>
                 <button onclick="showHint('${quizId}')">ヒントを見る</button>
-            `; // ★ 5秒後のメッセージを削除
+            `;
 
             setTimeout(() => {
                 options.forEach(button => button.disabled = false);
-                // ★ メッセージ全体を消すのではなく、「不正解です」の文字だけを消すように変更
                 const p = resultElement.querySelector('p');
                 if (p) {
                     p.textContent = 'もう一度挑戦してください。';
